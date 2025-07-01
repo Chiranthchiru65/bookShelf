@@ -1,0 +1,143 @@
+// src/pages/Home.scss
+.home {
+  padding: 2rem;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 80px);
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+      }
+    }
+  }
+
+  &__filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .filters-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      .genre-filter {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        background: white;
+        font-size: 1rem;
+        cursor: pointer;
+        outline: none;
+
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+
+      .filter-btn {
+        padding: 0.5rem 1rem;
+        background: #e9ecef;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+
+        &:hover {
+          background: #dee2e6;
+        }
+
+        &.active {
+          background: #007bff;
+          color: white;
+        }
+      }
+    }
+
+    .filters-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      span {
+        font-size: 1rem;
+        color: #333;
+      }
+
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+
+        input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          transition: 0.3s;
+          border-radius: 24px;
+
+          &:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+          }
+        }
+
+        input:checked + .slider {
+          background-color: #4caf50;
+        }
+
+        input:checked + .slider:before {
+          transform: translateX(26px);
+        }
+      }
+    }
+  }
+}

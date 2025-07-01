@@ -1,0 +1,11 @@
+$primary-color: #ece8de;
+$secondary-color: #ece8de;
+
+.dashboard {
+  min-height: 100%;
+  background-color: $primary-color;
+  padding: 25px;
+  &__content {
+    border-radius: 20px;
+  }
+}
