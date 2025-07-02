@@ -56,7 +56,7 @@ const Home: React.FunctionComponent<HomeProps> = () => {
       result = result.filter((book) => book.status === "finished");
     }
 
-    if (selectedGenre !== "all" && selectedGenre !== "Genre") {
+    if (selectedGenre !== "all") {
       result = result.filter((book) => book.genre === selectedGenre);
     }
 
@@ -69,6 +69,9 @@ const Home: React.FunctionComponent<HomeProps> = () => {
 
   const filteredBooks = getFilteredBooks();
 
+  const createSlug = (title: string) => {
+    return title.toLowerCase().replace(/\s+/g, "-");
+  };
   return (
     <div className="home">
       <div className="home__container">
@@ -156,7 +159,13 @@ const Home: React.FunctionComponent<HomeProps> = () => {
         {/* books grid */}
         <div className="home__books">
           {filteredBooks.map((book) => (
-            <div key={book.id} className="book-card">
+            <div
+              key={book.id}
+              className="book-card"
+              onClick={() => {
+                navigate(`/book/${createSlug(book.title)}`);
+              }}
+            >
               <div className="book-card__cover">
                 <div className="book-placeholder">📖</div>
               </div>
