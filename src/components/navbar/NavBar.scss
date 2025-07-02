@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables" as *;
 .navbar {
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -49,7 +49,7 @@
       transition: border-color 0.2s;
 
       &:focus {
-        border-color: #007bff;
+        border-color: $primary-btn-bg;
       }
 
       &::placeholder {
@@ -68,7 +68,7 @@
       color: #666;
 
       &:hover {
-        color: #007bff;
+        color: $primary-btn-bg;
       }
     }
   }

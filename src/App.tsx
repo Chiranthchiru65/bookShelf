@@ -9,6 +9,7 @@ function App() {
         <Route element={<Dashboard />}>
           <Route path="/" element={<Home />} />
           <Route path="/search-directory" element={<SearchDirectory />} />
+          <Route path="/book/:slug" element={<></>} />
         </Route>
       </Routes>
     </>

@@ -1,4 +1,4 @@
-export type Book = {
+export interface Book {
   id: string;
   title: string;
   author: string;
@@ -26,7 +26,7 @@ export type Book = {
     totalPages: number;
     updatedAt: string;
   }; // Only shown if status is "reading"
-};
+}
 
 export const books: Book[] = [
   {
