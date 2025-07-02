@@ -5,6 +5,7 @@ import "./Home.scss";
 interface HomeProps {}
 import { books } from "../../assets/dummyData/DummyData";
 import { useNavigate } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 const Home: React.FunctionComponent<HomeProps> = () => {
   const navigate = useNavigate();
@@ -186,7 +187,9 @@ const Home: React.FunctionComponent<HomeProps> = () => {
                     </span>
                   </div>
                   <div className="book-actions">
-                    <button className="action-btn">❤️</button>
+                    <button className="action-btn">
+                      <Heart />
+                    </button>
                   </div>
                 </div>
               </div>
