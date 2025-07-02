@@ -5,6 +5,7 @@ import "./Home.scss";
 interface HomeProps {}
 import { books } from "../../assets/dummyData/DummyData";
 import { useNavigate } from "react-router-dom";
+
 const Home: React.FunctionComponent<HomeProps> = () => {
   const navigate = useNavigate();
   const [booksData, setBooksData] = useState<Book[]>(books);
@@ -167,7 +168,9 @@ const Home: React.FunctionComponent<HomeProps> = () => {
               }}
             >
               <div className="book-card__cover">
-                <div className="book-placeholder">📖</div>
+                <div className="book-placeholder">
+                  <img src={book.coverImage} />
+                </div>
               </div>
               <div className="book-card__info">
                 <h4 className="book-title">{book.title}</h4>
@@ -184,7 +187,6 @@ const Home: React.FunctionComponent<HomeProps> = () => {
                   </div>
                   <div className="book-actions">
                     <button className="action-btn">❤️</button>
-                    <button className="action-btn">⋮</button>
                   </div>
                 </div>
               </div>
