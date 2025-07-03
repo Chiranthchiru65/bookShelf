@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useParams, Link } from "react-router-dom";
-import { books } from "../../assets/dummyData/DummyData";
+// import { books } from "../../assets/dummyData/DummyData";
 import PrimaryBtn from "../../components/primaryBtn/PrimaryBtn";
 import "./BookDetails.scss";
 import { ChevronRight } from "lucide-react";
-
+import { getBooks } from "../../utils/LocalStorage";
 interface BookDetailsProps {}
 
 const BookDetails: React.FunctionComponent<BookDetailsProps> = () => {
@@ -13,7 +13,7 @@ const BookDetails: React.FunctionComponent<BookDetailsProps> = () => {
   const createSlug = (title: string) => {
     return title.toLowerCase().replace(/\s+/g, "-");
   };
-
+  const books = getBooks();
   const book = books.find((book) => createSlug(book.title) === slug);
 
   if (!book) {
@@ -47,13 +47,7 @@ const BookDetails: React.FunctionComponent<BookDetailsProps> = () => {
           <span className="details__breadcrumb-separator">
             <ChevronRight />
           </span>
-          <Link to="/search-directory" className="details__breadcrumb-link">
-            Books
-          </Link>
-          <span className="details__breadcrumb-separator">
-            {" "}
-            <ChevronRight />
-          </span>
+
           <span className="details__breadcrumb-current">Book Details</span>
         </nav>
 

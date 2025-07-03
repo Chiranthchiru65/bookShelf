@@ -1,15 +1,16 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Book } from "../../assets/dummyData/DummyData";
 import "./Home.scss";
 interface HomeProps {}
 import { books } from "../../assets/dummyData/DummyData";
 import { useNavigate } from "react-router-dom";
+import { getBooks } from "../../utils/LocalStorage";
 import { Heart } from "lucide-react";
 
 const Home: React.FunctionComponent<HomeProps> = () => {
   const navigate = useNavigate();
-  const [booksData, setBooksData] = useState<Book[]>(books);
+  const [booksData, setBooksData] = useState<Book[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [selectedGenre, setSelectedGenre] = useState<string>("all");
@@ -20,6 +21,11 @@ const Home: React.FunctionComponent<HomeProps> = () => {
     favorites: booksData.filter((book) => book.isFavorite).length,
     finished: booksData.filter((book) => book.status === "finished").length,
   };
+
+  useEffect(() => {
+    const books = getBooks;
+    setBooksData(books);
+  }, []);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -165,7 +171,7 @@ const Home: React.FunctionComponent<HomeProps> = () => {
               key={book.id}
               className="book-card"
               onClick={() => {
-                navigate(`/book/${createSlug(book.title)}`);
+                navigate(`/${createSlug(book.title)}`);
               }}
             >
               <div className="book-card__cover">
