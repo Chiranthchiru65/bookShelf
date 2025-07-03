@@ -1,326 +1,204 @@
-// src/pages/bookDetails/BookDetails.scss
 @use "../../styles/variables" as *;
 
-.book-details {
+.details {
   padding: 2rem;
-  background-color: $primary-color;
+  background-color: $secondary-color;
   min-height: calc(100vh - 80px);
 
   &__container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
-  &__content {
-    background: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  &__breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: #666;
   }
 
-  &__header {
+  &__breadcrumb-link {
     display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #333;
+    }
+  }
+
+  &__breadcrumb-separator {
+    margin: 0 0.75rem;
+    color: #999;
+  }
+
+  &__breadcrumb-current {
+    color: #333;
+    font-weight: 500;
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
 
     @media (max-width: 768px) {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
   }
 
   &__cover {
-    flex-shrink: 0;
+    width: 300px;
+    height: 450px;
 
-    img {
-      width: 200px;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .book-cover-placeholder {
-      width: 200px;
-      height: 300px;
-      background: linear-gradient(135deg, #2c5530 0%, #1e3a21 100%);
-      border-radius: 0.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 1.5rem;
-      color: white;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-      .cover-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin: 0 0 1rem 0;
-        line-height: 1.2;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .cover-author {
-        font-size: 1rem;
-        margin: 0;
-        opacity: 0.9;
-        font-weight: 300;
-      }
+    @media (max-width: 768px) {
+      width: 250px;
+      height: 375px;
+      margin: 0 auto;
     }
   }
 
+  &__cover-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+
+  &__cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   &__info {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-    .book-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin: 0 0 0.5rem 0;
+  &__title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+
+  &__author {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  &__genre {
+    font-size: 1rem;
+    color: #888;
+    margin: 0.5rem 0;
+  }
+
+  &__published {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0.5rem 0;
+  }
+
+  &__status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  &__status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
       color: #333;
-      line-height: 1.2;
-    }
-
-    .book-author {
-      font-size: 1.5rem;
-      color: #666;
-      margin: 0 0 1rem 0;
-      font-weight: 400;
-    }
-
-    .book-genre {
-      display: inline-block;
-      background: #f0f8f0;
-      color: #2e7d33;
-      padding: 0.5rem 1rem;
-      border-radius: 1.5rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-    }
-
-    .book-published {
-      font-size: 1rem;
-      color: #666;
-      margin: 0 0 1.5rem 0;
-      font-weight: 500;
-    }
-
-    .book-status {
-      margin-bottom: 1rem;
-
-      .status-indicator {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.5rem 1rem;
-        border-radius: 1.5rem;
-        color: white;
-        font-size: 0.9rem;
-        font-weight: 600;
-
-        &::before {
-          content: "●";
-          margin-right: 0.5rem;
-          font-size: 0.8rem;
-        }
-      }
-    }
-
-    .book-read-status {
-      .read-indicator {
-        display: inline-flex;
-        align-items: center;
-        color: #666;
-        font-size: 0.9rem;
-        padding: 0.5rem 0;
-      }
     }
   }
 
   &__actions {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-top: 2rem;
     flex-wrap: wrap;
 
-    .btn {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      min-width: 120px;
-
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      &.btn-primary {
-        background-color: #2196f3;
-        color: white;
-
-        &:hover {
-          background-color: #1976d2;
-        }
-      }
-
-      &.btn-danger {
-        background-color: transparent;
-        color: #f44336;
-        border: 1px solid #f44336;
-
-        &:hover {
-          background-color: #f44336;
-          color: white;
-        }
-      }
-
-      &.btn-secondary {
-        background-color: #6c757d;
-        color: white;
-
-        &:hover {
-          background-color: #545b62;
-        }
-      }
+    @media (max-width: 480px) {
+      flex-direction: column;
+      gap: 0.75rem;
     }
+  }
 
-    @media (max-width: 768px) {
-      justify-content: center;
+  &__delete-btn,
+  &__reading-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: transparent;
+    border: 1px solid #ccc;
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  }
+
+  &__delete-btn {
+    color: #dc2626;
+    border-color: #dc2626;
+
+    &:hover {
+      background-color: #dc2626;
+      color: white;
+    }
+  }
+
+  &__reading-btn {
+    color: #666;
+    border-color: #ccc;
+
+    &:hover {
+      background-color: #f3f4f6;
+      border-color: #999;
     }
   }
 
   &__description {
-    margin-bottom: 2rem;
-
-    h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0 0 1rem 0;
-      color: #333;
-    }
-
-    p {
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #555;
-      margin: 0;
-    }
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  &__tags {
-    margin-bottom: 2rem;
-
-    h4 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin: 0 0 0.75rem 0;
-      color: #333;
-    }
-
-    .tags-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-
-      .tag {
-        background: #e3f2fd;
-        color: #1976d2;
-        padding: 0.25rem 0.75rem;
-        border-radius: 1rem;
-        font-size: 0.85rem;
-        font-weight: 500;
-      }
-    }
+  &__description-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 1rem 0;
   }
 
-  &__progress {
-    h4 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin: 0 0 1rem 0;
-      color: #333;
-    }
-
-    .progress-info {
-      p {
-        margin: 0 0 0.5rem 0;
-        color: #666;
-        font-weight: 500;
-      }
-
-      .progress-bar {
-        width: 100%;
-        height: 8px;
-        background-color: #e0e0e0;
-        border-radius: 4px;
-        margin: 0.5rem 0;
-        overflow: hidden;
-
-        .progress-fill {
-          height: 100%;
-          background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
-          border-radius: 4px;
-          transition: width 0.3s ease;
-        }
-      }
-
-      .progress-percentage {
-        font-size: 0.9rem;
-        color: #4caf50;
-        font-weight: 600;
-      }
-    }
-  }
-
-  &__error {
-    text-align: center;
-    padding: 3rem;
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-    h2 {
-      color: #f44336;
-      margin-bottom: 1rem;
-    }
-
-    button {
-      background-color: #2196f3;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-size: 1rem;
-
-      &:hover {
-        background-color: #1976d2;
-      }
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-
-    &__content {
-      padding: 1.5rem;
-    }
-
-    &__info {
-      .book-title {
-        font-size: 2rem;
-      }
-
-      .book-author {
-        font-size: 1.25rem;
-      }
-    }
+  &__description-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
   }
 }

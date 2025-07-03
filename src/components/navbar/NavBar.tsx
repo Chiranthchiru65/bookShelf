@@ -3,10 +3,29 @@ import "./NavBar.scss";
 import Logo from "../../assets/icons/Logo";
 import { useState } from "react";
 import { Search, UserRound } from "lucide-react";
+import PrimaryBtn from "../primaryBtn/PrimaryBtn";
+import type { Book } from "../../assets/dummyData/DummyData";
+import { useNavigate } from "react-router-dom";
 interface NavBarProps {}
 
 const NavBar: React.FunctionComponent<NavBarProps> = () => {
+  const navigate = useNavigate();
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
+  const [newBookData, setNewBookData] = useState<Book>({
+    id: crypto.randomUUID(), // This generates a unique ID
+    title: "",
+    author: "",
+    genre: undefined,
+    publishedYear: undefined,
+    coverImage: undefined,
+    isRead: false,
+    isFavorite: false,
+    createdAt: new Date().toISOString(),
+    status: "to-read",
+    description: undefined,
+    tags: undefined,
+    readingProgress: undefined,
+  });
 
   const handlePopup = () => {
     setShowPopUp((showPopUp) => !showPopUp);
@@ -16,8 +35,13 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="navbar__container">
-          <div className="navbar__logo">
+        <div className="navbar__container ">
+          <div
+            className="navbar__logo"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <div className="navbar__logo-icon">
               <Logo size={34} />
             </div>
@@ -48,9 +72,22 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
         </div>
       </nav>
       {showPopUp && (
-        <>
-          <div></div>
-        </>
+        <div className="mainPopUp" onClick={handlePopup}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="popup__title">Add New Book</h2>
+            <form>
+              <div className="popup__container">
+                <div className="popup-title">
+                  <label>Title</label>
+                  <input />
+                </div>
+              </div>
+              <PrimaryBtn onClick={handlePopup} bgcolor="#007bff" color="white">
+                Close
+              </PrimaryBtn>
+            </form>
+          </div>
+        </div>
       )}
     </>
   );
