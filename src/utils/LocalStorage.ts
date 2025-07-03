@@ -38,3 +38,17 @@ export const getBook = (id: string): Book | null => {
     return null;
   }
 };
+
+export const deleteBook = (id: string): boolean => {
+  let isSuccess = false;
+  try {
+    const books = getBooks();
+    const filteredArray = books.filter((book) => book.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredArray));
+    isSuccess = true;
+  } catch (err) {
+    console.log(err);
+    isSuccess = false;
+  }
+  return isSuccess;
+};

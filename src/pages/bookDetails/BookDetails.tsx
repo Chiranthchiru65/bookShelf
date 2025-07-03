@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import PrimaryBtn from "../../components/primaryBtn/PrimaryBtn";
 import "./BookDetails.scss";
 import { ChevronRight } from "lucide-react";
-import { getBooks } from "../../utils/LocalStorage";
+import { deleteBook, getBooks } from "../../utils/LocalStorage";
 interface BookDetailsProps {}
 
 const BookDetails: React.FunctionComponent<BookDetailsProps> = () => {
@@ -25,6 +25,10 @@ const BookDetails: React.FunctionComponent<BookDetailsProps> = () => {
       </div>
     );
   }
+
+  const handleDelete = (id: string) => {
+    deleteBook(id);
+  };
 
   return (
     <div className="details">
@@ -86,7 +90,12 @@ const BookDetails: React.FunctionComponent<BookDetailsProps> = () => {
               <PrimaryBtn bgcolor="#4285f4" color="white">
                 Edit Book
               </PrimaryBtn>
-              <button className="details__delete-btn">Delete Book</button>
+              <button
+                className="details__delete-btn"
+                onClick={() => handleDelete(book.id)}
+              >
+                Delete Book
+              </button>
               <button className="details__reading-btn">Mark as Reading</button>
             </div>
           </div>
