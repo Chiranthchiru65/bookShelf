@@ -6,7 +6,7 @@ interface HomeProps {}
 import { books } from "../../assets/dummyData/DummyData";
 import { useNavigate } from "react-router-dom";
 import { getBooks } from "../../utils/LocalStorage";
-import { Heart } from "lucide-react";
+import { Circle, Heart } from "lucide-react";
 
 const Home: React.FunctionComponent<HomeProps> = () => {
   const navigate = useNavigate();
@@ -22,21 +22,53 @@ const Home: React.FunctionComponent<HomeProps> = () => {
     finished: booksData.filter((book) => book.status === "finished").length,
   };
 
-  useEffect(() => {
-    const books = getBooks;
+  const loadBooks = () => {
+    const books = getBooks();
     setBooksData(books);
+  };
+
+  useEffect(() => {
+    loadBooks();
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      loadBooks();
+    };
+
+    window.addEventListener("booksChanged", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("booksChanged", handleStorageChange);
+    };
   }, []);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "to-read":
-        return "🔴";
+        return (
+          <>
+            <Circle fill="#f70000" />
+          </>
+        );
       case "reading":
-        return "🟡";
+        return (
+          <>
+            <Circle fill="#eeff00" />
+          </>
+        );
       case "finished":
-        return "🟢";
+        return (
+          <>
+            <Circle fill="#00e600" />
+          </>
+        );
       default:
-        return "⚪";
+        return (
+          <>
+            <Circle fill="#003cbd" />
+          </>
+        );
     }
   };
 
@@ -83,7 +115,6 @@ const Home: React.FunctionComponent<HomeProps> = () => {
   return (
     <div className="home">
       <div className="home__container">
-        {/* cards status */}
         <div className="home__stats">
           <div className="stat-card">
             <h3>Total Books</h3>
@@ -102,7 +133,6 @@ const Home: React.FunctionComponent<HomeProps> = () => {
             <div className="stat-number">{stats.finished}</div>
           </div>
         </div>
-        {/* filter section */}
         <div className="home__filters">
           <div className="filters-left">
             <select
@@ -171,12 +201,16 @@ const Home: React.FunctionComponent<HomeProps> = () => {
               key={book.id}
               className="book-card"
               onClick={() => {
-                navigate(`/${createSlug(book.title)}`);
+                navigate(`/${book.id}`);
               }}
             >
               <div className="book-card__cover">
                 <div className="book-placeholder">
-                  <img src={book.coverImage} />
+                  <img
+                    src={book.coverImage}
+                    alt={`${book.title} cover`}
+                    className="book-card__img"
+                  />
                 </div>
               </div>
               <div className="book-card__info">
@@ -192,11 +226,13 @@ const Home: React.FunctionComponent<HomeProps> = () => {
                       {getStatusText(book.status)}
                     </span>
                   </div>
-                  <div className="book-actions">
-                    <button className="action-btn">
-                      <Heart />
-                    </button>
-                  </div>
+                  {book.isFavorite && (
+                    <div className="book-actions">
+                      <button className="action-btn">
+                        <Heart fill="red" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -150,26 +150,19 @@
       border-radius: 0.75rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
+
       cursor: pointer;
 
       &:hover {
-        transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
       &__cover {
-        height: 200px;
+        height: 350px;
         position: relative;
         overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(
-          135deg,
-          #f0f0f0 0%,
-          #e0e0e0 100%
-        ); // Add fallback
+        border-radius: 8px 8px 0 0;
+        background-color: #f3f4f6;
 
         .book-placeholder {
           width: 100%;
@@ -177,8 +170,6 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 3rem;
-          opacity: 0.7;
         }
 
         .book-card__img {
@@ -186,9 +177,9 @@
           height: 100%;
           object-fit: cover;
           object-position: center;
+          display: block;
         }
       }
-
       &__info {
         padding: 1.25rem;
 
@@ -248,14 +239,9 @@
             background: none;
             border: none;
             font-size: 1.1rem;
-            cursor: pointer;
+            // cursor: pointer;
             padding: 0.25rem;
             border-radius: 0.25rem;
-            transition: background-color 0.2s;
-
-            &:hover {
-              background: #f8f9fa;
-            }
           }
         }
       }

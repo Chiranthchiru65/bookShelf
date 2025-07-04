@@ -5,15 +5,18 @@ import { useState } from "react";
 import { Search, UserRound } from "lucide-react";
 import PrimaryBtn from "../primaryBtn/PrimaryBtn";
 import type { Book } from "../../assets/dummyData/DummyData";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { addBook } from "../../utils/LocalStorage";
 
 interface NavBarProps {}
 
 const NavBar: React.FunctionComponent<NavBarProps> = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isBookDetailsPage = location.pathname !== "/";
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const [newBookData, setNewBookData] = useState<Book>({
     id: crypto.randomUUID(),
     title: "",
@@ -80,20 +83,42 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
 
   const handleSave = () => {
     if (!newBookData.title.trim()) {
-      alert(" enter a book title");
-      return;
-    }
-    if (!newBookData.author.trim()) {
-      alert("enter an author name");
+      alert("enter book title");
       return;
     }
 
-    console.log("Saving book:", newBookData);
+    if (!newBookData.author.trim()) {
+      alert("enter  author name");
+      return;
+    }
+
+    if (!newBookData.genre) {
+      alert("select genre");
+      return;
+    }
+
+    if (!newBookData.publishedYear) {
+      alert("enter published year");
+      return;
+    }
+
+    if (!newBookData.coverImage) {
+      alert("select cover image");
+      return;
+    }
+
+    if (!newBookData.description?.trim()) {
+      alert("enter description");
+      return;
+    }
+
+    console.log(" book:", newBookData);
     addBook(newBookData);
+
+    window.dispatchEvent(new CustomEvent("booksChanged"));
 
     handlePopup();
   };
-
   const genreOptions: Book["genre"][] = [
     "Fiction",
     "Non-Fiction",
@@ -123,27 +148,31 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
             <span className="navbar__logo-text">BookShelf Manager</span>
           </div>
 
-          <div className="navbar__search">
-            <input
-              type="text"
-              placeholder="Search books..."
-              className="navbar__search-input"
-            />
-            <button className="navbar__search-btn">
-              <Search />
-            </button>
-          </div>
-
-          <div className="navbar__actions">
-            <button className="navbar__add-book" onClick={handlePopup}>
-              Add New Book
-            </button>
-            {/* <div className="navbar__profile">
-              <div className="navbar__profile-icon">
-                <UserRound />
+          {!isBookDetailsPage && (
+            <>
+              <div className="navbar__search">
+                <input
+                  type="text"
+                  placeholder="Search books..."
+                  className="navbar__search-input"
+                />
+                <button className="navbar__search-btn">
+                  <Search />
+                </button>
               </div>
-            </div> */}
-          </div>
+
+              <div className="navbar__actions">
+                <button className="navbar__add-book" onClick={handlePopup}>
+                  Add New Book
+                </button>
+                {/* <div className="navbar__profile">
+              <div className="navbar__profile-icon">
+              <UserRound />
+              </div>
+              </div> */}
+              </div>
+            </>
+          )}
         </div>
       </nav>
 
@@ -172,7 +201,9 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                   </div>
 
                   <div className="form-field">
-                    <label className="form-label">Author</label>
+                    <label className="form-label">
+                      Author <span className="required">*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-input"
@@ -186,7 +217,9 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                   </div>
 
                   <div className="form-field">
-                    <label className="form-label">Genre</label>
+                    <label className="form-label">
+                      Genre <span className="required">*</span>
+                    </label>
                     <select
                       className="form-select"
                       value={newBookData.genre || ""}
@@ -208,13 +241,15 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                   </div>
 
                   <div className="form-field">
-                    <label className="form-label">Published Year</label>
+                    <label className="form-label">
+                      Published Year <span className="required">*</span>
+                    </label>
                     <input
                       type="number"
                       className="form-input"
                       placeholder="YYYY"
-                      min=""
-                      max={4}
+                      min="1000"
+                      max="2025"
                       value={newBookData.publishedYear || ""}
                       required
                       onChange={(e) =>
@@ -227,7 +262,9 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                   </div>
 
                   <div className="form-field">
-                    <label className="form-label">Status</label>
+                    <label className="form-label">
+                      Status <span className="required">*</span>
+                    </label>
                     <div className="radio-group">
                       <label className="radio-option">
                         <input
@@ -268,6 +305,7 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                           type="radio"
                           name="status"
                           value="finished"
+                          required
                           checked={newBookData.status === "finished"}
                           onChange={(e) =>
                             handleInputChange(
@@ -283,7 +321,9 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                   </div>
 
                   <div className="form-field">
-                    <label className="form-label">Description</label>
+                    <label className="form-label">
+                      Description <span className="required">*</span>
+                    </label>
                     <textarea
                       className="form-textarea"
                       placeholder="Enter description"
@@ -299,6 +339,9 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
 
                 <div className="form-group form-group--right">
                   <div className="image-section">
+                    <label className="form-label">
+                      Cover Image <span className="required">*</span>
+                    </label>
                     <div className="image-preview">
                       {selectedImage ? (
                         <img
@@ -307,7 +350,7 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                           className="preview-image"
                         />
                       ) : (
-                        <div className="no-image">No image</div>
+                        <div className="no-image">No image selected</div>
                       )}
                     </div>
                     <input
@@ -316,6 +359,7 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                       accept="image/*"
                       onChange={handleImageSelect}
                       style={{ display: "none" }}
+                      required
                     />
                     <PrimaryBtn
                       bgcolor="#007bff"
@@ -324,7 +368,7 @@ const NavBar: React.FunctionComponent<NavBarProps> = () => {
                         document.getElementById("image-upload")?.click()
                       }
                     >
-                      Selectt
+                      Select Image *
                     </PrimaryBtn>
                   </div>
                 </div>

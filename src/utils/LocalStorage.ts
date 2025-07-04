@@ -8,6 +8,7 @@ export const addBook = (book: Book): boolean => {
     let books = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     books = [...books, book];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+    window.dispatchEvent(new CustomEvent("booksChanged"));
     isSuccess = true;
   } catch (err) {
     console.log(err);
@@ -45,7 +46,27 @@ export const deleteBook = (id: string): boolean => {
     const books = getBooks();
     const filteredArray = books.filter((book) => book.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredArray));
+    window.dispatchEvent(new CustomEvent("booksChanged"));
     isSuccess = true;
+  } catch (err) {
+    console.log(err);
+    isSuccess = false;
+  }
+  return isSuccess;
+};
+
+export const updateBook = (id: string, updatedBook: Book): boolean => {
+  let isSuccess = false;
+  try {
+    const books = getBooks();
+    const bookIndex = books.findIndex((book) => book.id === id);
+
+    if (bookIndex !== -1) {
+      books[bookIndex] = { ...updatedBook, id };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+      window.dispatchEvent(new CustomEvent("booksChanged"));
+      isSuccess = true;
+    }
   } catch (err) {
     console.log(err);
     isSuccess = false;
